@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarungOnline - Kuliner Nusantara Segar</title>
+  <title>WarungOnline - Kuliner Nusantara</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     :root {
@@ -24,7 +24,7 @@
       flex-direction: column;
     }
 
-    /* Navbar Hijau Terang */
+    /* Navbar Hijau Terang Tanpa Ikon */
     .navbar-green {
       background: linear-gradient(135deg, #15803d 0%, #16a34a 45%, #22c55e 100%) !important;
       box-shadow: 0 4px 16px rgba(22, 163, 74, 0.25);
@@ -113,8 +113,8 @@
     }
 
     .food-thumb {
-      width: 72px;
-      height: 72px;
+      width: 68px;
+      height: 68px;
       object-fit: cover;
       border-radius: 12px;
       border: 2px solid #86efac;
@@ -136,26 +136,26 @@
   </style>
 </head>
 <body>
-  <!-- Navbar Navigasi Hijau Terang -->
+  <!-- Navbar Navigasi Hijau Terang Tanpa Ikon -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-green mb-4 py-3 sticky-top">
     <div class="container">
-      <a class="navbar-brand fw-bold text-white d-flex align-items-center gap-2" href="{{ url_for('pemesanan') }}">
-        <span class="fs-4">🥗</span> WarungOnline
+      <a class="navbar-brand fw-bold text-white" href="{{ url_for('pemesanan') }}">
+        WarungOnline
       </a>
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navContent">
         <div class="navbar-nav ms-auto align-items-lg-center gap-2 mt-2 mt-lg-0">
-          <a href="{{ url_for('keranjang') }}" class="btn btn-outline-light btn-sm fw-semibold d-flex align-items-center gap-1 rounded-pill px-3">
-            🛒 Keranjang
+          <a href="{{ url_for('keranjang') }}" class="btn btn-outline-light btn-sm fw-semibold rounded-pill px-3">
+            Keranjang
             <span class="badge bg-white text-success rounded-pill ms-1 fw-bold">{{ total_cart_items }}</span>
           </a>
           <a href="{{ url_for('pemesanan') }}" class="btn btn-outline-light btn-sm fw-semibold rounded-pill px-3">
-            💳 Checkout Pemesanan
+            Checkout Pemesanan
           </a>
-          <a href="{{ url_for('admin_produk') }}" class="btn btn-light btn-sm fw-bold text-success rounded-pill px-3 shadow-sm d-flex align-items-center gap-1">
-            ⚙️ Dashboard Admin
+          <a href="{{ url_for('admin_produk') }}" class="btn btn-light btn-sm fw-bold text-success rounded-pill px-3 shadow-sm">
+            Dashboard Admin
             {% if total_pesanan_masuk > 0 %}
             <span class="badge bg-success text-white rounded-pill ms-1">{{ total_pesanan_masuk }}</span>
             {% endif %}
@@ -166,15 +166,12 @@
   </nav>
 
   <div class="container pb-5 flex-grow-1">
-    <!-- Notifikasi Flash Message Hijau & Alert -->
+    <!-- Notifikasi Flash Message Murni Teks -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
           <div class="alert alert-{{ 'success' if category == 'success' else ('warning' if category == 'warning' else ('danger' if category in ['error', 'danger'] else 'info')) }} alert-dismissible fade show shadow-sm rounded-4 mb-4 border-2" role="alert">
-            <div class="d-flex align-items-center gap-2">
-              <span class="fs-5">{{ '✅' if category == 'success' else ('⚠️' if category == 'warning' else 'ℹ️') }}</span>
-              <div>{{ message }}</div>
-            </div>
+            <div>{{ message }}</div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
         {% endfor %}
@@ -186,7 +183,7 @@
 
   <footer class="text-center text-muted small py-4 border-top bg-white mt-auto">
     <div class="container text-success-emphasis fw-medium">
-      🍃 WarungOnline &copy; 2026 — Tugas 7 Pemrograman Web (Flask Forms, WTForms, CSRF Protection)
+      WarungOnline 2026 - Tugas 7 Pemrograman Web (Flask Forms, WTForms, CSRF Protection)
     </div>
   </footer>
 

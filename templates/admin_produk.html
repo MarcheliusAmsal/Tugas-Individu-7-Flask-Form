@@ -6,7 +6,7 @@
   <div class="col-lg-4">
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden border border-success-subtle">
       <div class="card-green-header d-flex justify-content-between align-items-center">
-        <span>⚙️ Tambah Menu Baru</span>
+        <span>Tambah Menu Baru</span>
         <span class="badge bg-white text-success rounded-pill small">Admin</span>
       </div>
       <div class="card-body bg-white p-4">
@@ -49,11 +49,11 @@
 
     <!-- Card Info Ringkas Alur Pemesanan -->
     <div class="card shadow-sm border-0 rounded-4 mt-4 p-3 bg-white border border-success-subtle">
-      <h6 class="fw-bold text-success mb-2">📌 Alur Kerja Sistem Pemesanan:</h6>
+      <h6 class="fw-bold text-success mb-2">Alur Kerja Sistem Pemesanan:</h6>
       <ol class="small text-muted ps-3 mb-0">
         <li class="mb-1">Pelanggan memilih menu dan mengisi form checkout di <strong>Halaman Pemesanan</strong>.</li>
         <li class="mb-1">Data validasi form diproses oleh Flask-WTF.</li>
-        <li>Semua data pemesan dan <strong>nama menu yang dipesan</strong> langsung dicatat secara real-time pada tabel di samping!</li>
+        <li>Semua data pemesan dan <strong>nama menu yang dipesan</strong> langsung dicatat secara real-time pada tabel di samping.</li>
       </ol>
     </div>
   </div>
@@ -63,9 +63,7 @@
     <!-- Tabel 1: Pesanan Masuk Tercatat -->
     <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden border border-success-subtle">
       <div class="card-green-header d-flex justify-content-between align-items-center">
-        <span class="d-flex align-items-center gap-2">
-          <span class="fs-5">📋</span> Pesanan Masuk (Tercatat di Admin)
-        </span>
+        <span>Pesanan Masuk (Tercatat di Admin)</span>
         <span class="badge bg-white text-success rounded-pill fw-bold">{{ pesanan|length }} Pesanan Diterima</span>
       </div>
       <div class="card-body bg-white p-3 p-md-4">
@@ -91,8 +89,8 @@
                 </td>
                 <td>
                   <strong class="text-dark">{{ p.nama }}</strong><br>
-                  <span class="text-muted small">📱 {{ p.no_hp }}</span><br>
-                  <span class="text-muted small">✉️ {{ p.email }}</span>
+                  <span class="text-muted small">Telp: {{ p.no_hp }}</span><br>
+                  <span class="text-muted small">Email: {{ p.email }}</span>
                 </td>
                 <td>
                   <span class="small text-secondary">{{ p.alamat }}</span><br>
@@ -104,7 +102,7 @@
                     <div class="d-flex flex-column gap-1">
                       {% for m in p.daftar_menu %}
                         <div class="p-1 px-2 rounded-2 bg-success-subtle border border-success-subtle">
-                          <strong class="text-success-emphasis">🍱 {{ m.nama }}</strong>
+                          <strong class="text-success-emphasis">{{ m.nama }}</strong>
                           <span class="badge bg-success text-white ms-1">{{ m.qty }}x</span>
                           <span class="text-muted small d-block" style="font-size: 11px;">@ Rp {{ "{:,.0f}".format(m.harga).replace(',', '.') }}</span>
                         </div>
@@ -115,12 +113,12 @@
                   {% endif %}
                 </td>
                 <td>
-                  <strong class="text-success fs-6">
+                  <strong class="text-success fs-6 text-nowrap">
                     Rp {{ "{:,.0f}".format(p.total_bayar).replace(',', '.') }}
                   </strong>
                 </td>
                 <td>
-                  <span class="badge badge-green text-nowrap">✓ {{ p.status }}</span>
+                  <span class="badge badge-green text-nowrap">{{ p.status }}</span>
                 </td>
               </tr>
               {% endfor %}
@@ -129,11 +127,10 @@
         </div>
         {% else %}
         <div class="text-center py-5">
-          <div class="fs-1 text-muted mb-2">📋</div>
           <h6 class="fw-bold text-success-emphasis">Belum Ada Pesanan yang Masuk</h6>
           <p class="text-muted small mb-3">Pesanan yang dibuat oleh pelanggan melalui form checkout akan tercatat di sini secara otomatis beserta nama menunya.</p>
           <a href="{{ url_for('pemesanan') }}" class="btn btn-outline-green btn-sm rounded-pill px-4">
-            Coba Buat Pesanan di Halaman Pemesanan →
+            Coba Buat Pesanan di Halaman Pemesanan
           </a>
         </div>
         {% endif %}
@@ -143,9 +140,7 @@
     <!-- Tabel 2: Daftar Menu Aktif di Warung -->
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden border border-success-subtle">
       <div class="card-header bg-success text-white fw-bold py-3 d-flex justify-content-between align-items-center">
-        <span class="d-flex align-items-center gap-2">
-          <span>🍽️</span> Daftar Menu Aktif yang Tersedia
-        </span>
+        <span>Daftar Menu Aktif yang Tersedia</span>
         <span class="badge bg-white text-success rounded-pill fw-bold">{{ menu|length }} Menu</span>
       </div>
       <div class="card-body bg-white p-3">
@@ -167,7 +162,7 @@
                 <td>
                   <img
                     src="{{ m.gambar }}"
-                    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2244%22 viewBox=%220 0 44 44%22><rect width=%2244%22 height=%2244%22 rx=%228%22 fill=%22%2322c55e%22/><text x=%2250%25%22 y=%2256%25%22 font-size=%2222%22 text-anchor=%22middle%22>🍱</text></svg>';"
+                    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2244%22 viewBox=%220 0 44 44%22><rect width=%2244%22 height=%2244%22 rx=%228%22 fill=%22%2322c55e%22/><text x=%2250%25%22 y=%2254%25%22 font-size=%2210%22 fill=%22%23ffffff%22 font-weight=%22bold%22 text-anchor=%22middle%22>MENU</text></svg>';"
                     style="width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1.5px solid #86efac;"
                     alt="{{ m.nama }}"
                   >
@@ -177,7 +172,7 @@
                   <div class="text-muted" style="font-size: 11px;">{{ m.deskripsi }}</div>
                 </td>
                 <td><span class="badge badge-green">{{ m.kategori }}</span></td>
-                <td><strong class="text-success">Rp {{ "{:,.0f}".format(m.harga).replace(',', '.') }}</strong></td>
+                <td><strong class="text-success text-nowrap">Rp {{ "{:,.0f}".format(m.harga).replace(',', '.') }}</strong></td>
                 <td class="text-center">
                   <a href="{{ url_for('admin_hapus_menu', item_id=m.id) }}" class="btn btn-outline-danger btn-sm py-0 px-2 rounded-pill" onclick="return confirm('Hapus menu ini?');">
                     Hapus

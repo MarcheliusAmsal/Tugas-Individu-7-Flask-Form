@@ -2,10 +2,10 @@
 {% block content %}
 <div class="row g-4">
   <div class="col-lg-8">
-    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white border border-success-subtle">
+    <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white border border-success-subtle">
       <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-success-subtle">
         <div>
-          <h4 class="fw-bold mb-1 text-success">🛒 Keranjang Belanja</h4>
+          <h4 class="fw-bold mb-1 text-success">Keranjang Belanja</h4>
           <span class="text-muted small">Atur jumlah menu dan porsi sebelum checkout pesanan</span>
         </div>
         <span class="badge badge-green rounded-pill px-3 py-2 fs-6">{{ menu|length }} Jenis Menu</span>
@@ -14,63 +14,71 @@
       {% if menu %}
         <div class="d-flex flex-column gap-3 mb-4">
           {% for item in menu %}
-          <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between p-3 rounded-4 border border-success-subtle bg-light gap-3 shadow-sm">
-            <div class="d-flex align-items-center gap-3">
-              <img
-                src="{{ item.gambar }}"
-                onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2272%22 height=%2272%22 viewBox=%220 0 72 72%22><rect width=%2272%22 height=%2272%22 rx=%2212%22 fill=%22%2322c55e%22/><text x=%2250%25%22 y=%2256%25%22 font-size=%2232%22 text-anchor=%22middle%22>🍱</text></svg>';"
-                class="food-thumb shadow-sm"
-                alt="{{ item.nama }}"
-              >
-              <div>
-                <div class="d-flex align-items-center gap-2 mb-1">
-                  <h6 class="fw-bold mb-0 text-dark">{{ item.nama }}</h6>
-                  {% if item.kategori %}
-                  <span class="badge badge-green small">{{ item.kategori }}</span>
-                  {% endif %}
+          <div class="p-3 rounded-4 border border-success-subtle bg-light shadow-sm">
+            <div class="row align-items-center g-3">
+              
+              <!-- Kolom Foto & Keterangan Menu -->
+              <div class="col-12 col-sm-7 col-md-8">
+                <div class="d-flex align-items-center gap-3">
+                  <img
+                    src="{{ item.gambar }}"
+                    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2268%22 height=%2268%22 viewBox=%220 0 68 68%22><rect width=%2268%22 height=%2268%22 rx=%2210%22 fill=%22%2322c55e%22/><text x=%2250%25%22 y=%2254%25%22 font-size=%2212%22 fill=%22%23ffffff%22 font-weight=%22bold%22 text-anchor=%22middle%22>MENU</text></svg>';"
+                    class="food-thumb flex-shrink-0"
+                    alt="{{ item.nama }}"
+                  >
+                  <div class="overflow-hidden">
+                    <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                      <h6 class="fw-bold mb-0 text-dark">{{ item.nama }}</h6>
+                      {% if item.kategori %}
+                      <span class="badge badge-green small">{{ item.kategori }}</span>
+                      {% endif %}
+                    </div>
+                    <p class="text-muted small mb-1 text-truncate">{{ item.deskripsi }}</p>
+                    <div class="fw-bold text-success small">Rp {{ "{:,.0f}".format(item.harga).replace(',', '.') }} <span class="text-muted fw-normal">/ porsi</span></div>
+                  </div>
                 </div>
-                <p class="text-muted small mb-1 text-truncate" style="max-width: 320px;">{{ item.deskripsi }}</p>
-                <div class="fw-bold text-success">Rp {{ "{:,.0f}".format(item.harga).replace(',', '.') }} <span class="text-muted fw-normal small">/ porsi</span></div>
               </div>
-            </div>
 
-            <!-- Tombol Pengatur Jumlah & Subtotal -->
-            <div class="d-flex align-items-center justify-content-between justify-content-sm-end gap-3 pt-2 pt-sm-0">
-              <div class="d-flex align-items-center border border-success-subtle bg-white rounded-3 shadow-sm px-1 py-0.5">
-                <a href="{{ url_for('kurang_qty', item_id=item.id) }}" class="btn btn-sm btn-link text-success text-decoration-none px-2 fw-bold fs-5" title="Kurang 1">−</a>
-                <span class="px-2 fw-bold text-dark">{{ item.qty }}</span>
-                <a href="{{ url_for('tambah_qty', item_id=item.id) }}" class="btn btn-sm btn-link text-success text-decoration-none px-2 fw-bold fs-5" title="Tambah 1">+</a>
-              </div>
-              <div class="text-end" style="min-width: 110px;">
-                <div class="fw-bold text-success-emphasis">
-                  Rp {{ "{:,.0f}".format(item.harga * item.qty).replace(',', '.') }}
+              <!-- Kolom Atur Jumlah & Subtotal Harga (Pasti Masuk di Dalam Card) -->
+              <div class="col-12 col-sm-5 col-md-4">
+                <div class="d-flex align-items-center justify-content-between justify-content-sm-end gap-3">
+                  <div class="d-flex align-items-center border border-success-subtle bg-white rounded-3 px-1 py-1 shadow-sm flex-shrink-0">
+                    <a href="{{ url_for('kurang_qty', item_id=item.id) }}" class="btn btn-sm btn-link text-success text-decoration-none px-2 fw-bold" title="Kurangi Porsi">-</a>
+                    <span class="px-2 fw-bold text-dark small">{{ item.qty }}</span>
+                    <a href="{{ url_for('tambah_qty', item_id=item.id) }}" class="btn btn-sm btn-link text-success text-decoration-none px-2 fw-bold" title="Tambah Porsi">+</a>
+                  </div>
+                  <div class="text-end flex-shrink-0">
+                    <div class="fw-bold text-success-emphasis text-nowrap">
+                      Rp {{ "{:,.0f}".format(item.harga * item.qty).replace(',', '.') }}
+                    </div>
+                    <a href="{{ url_for('hapus_item', item_id=item.id) }}" class="text-danger small text-decoration-none fw-semibold" onclick="return confirm('Hapus menu ini dari keranjang?');">
+                      Hapus
+                    </a>
+                  </div>
                 </div>
-                <a href="{{ url_for('hapus_item', item_id=item.id) }}" class="text-danger small text-decoration-none fw-semibold" onclick="return confirm('Hapus menu ini dari keranjang?');">
-                  🗑️ Hapus
-                </a>
               </div>
+
             </div>
           </div>
           {% endfor %}
         </div>
       {% else %}
         <div class="text-center py-5">
-          <div class="fs-1 mb-2">🛒</div>
           <h5 class="fw-bold text-success-emphasis">Keranjang Belanja Anda Kosong</h5>
           <p class="text-muted small">Tambahkan menu lezat favorit Anda dari Dashboard Admin.</p>
           <a href="{{ url_for('admin_produk') }}" class="btn btn-green fw-bold px-4 py-2 mt-2 rounded-pill">
-            + Tambah Menu Baru di Admin
+            Tambah Menu Baru di Admin
           </a>
         </div>
       {% endif %}
 
       <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 border-top border-success-subtle gap-2">
         <a href="{{ url_for('admin_produk') }}" class="btn btn-outline-green btn-sm rounded-pill px-3">
-          + Tambah Menu Lain via Admin
+          Tambah Menu Lain via Admin
         </a>
         {% if menu %}
         <a href="{{ url_for('pemesanan') }}" class="btn btn-green fw-bold px-4 py-2 rounded-pill shadow">
-          Lanjut Isi Formulir Pemesanan →
+          Lanjut Isi Formulir Pemesanan
         </a>
         {% endif %}
       </div>

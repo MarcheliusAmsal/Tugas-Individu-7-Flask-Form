@@ -58,7 +58,7 @@ def pemesanan():
 
     if form.validate_on_submit():
         if not KERANJANG_DB:
-            flash("Keranjang belanja masih kosong! Silakan pilih menu terlebih dahulu sebelum melakukan checkout.", "warning")
+            flash("Keranjang belanja masih kosong. Silakan pilih menu terlebih dahulu sebelum melakukan checkout.", "warning")
             return redirect(url_for("keranjang"))
 
         # 1. Catat nama menu yang dipesan beserta porsi dan rincian harga
@@ -93,7 +93,7 @@ def pemesanan():
         PESANAN_DB.insert(0, pesanan_baru)
 
         flash(
-            f"🎉 Pesanan atas nama {pesanan_baru['nama']} berhasil dibuat! Data formulir dan menu yang dipesan ({rincian_teks}) telah dikirim dan dicatat di Dashboard Admin.",
+            f"Pesanan atas nama {pesanan_baru['nama']} berhasil dibuat. Data formulir dan menu yang dipesan ({rincian_teks}) telah dikirim dan dicatat di Dashboard Admin.",
             "success"
         )
         return redirect(url_for("admin_produk"))
@@ -188,7 +188,7 @@ def admin_produk():
             "gambar": gambar_input
         }
         KERANJANG_DB.append(menu_baru)
-        flash(f"✅ Menu baru '{form.nama.data}' (Rp {harga_int:,.0f}) berhasil dicatat dan masuk ke sistem!", "success")
+        flash(f"Menu baru '{form.nama.data}' (Rp {harga_int:,.0f}) berhasil dicatat dan masuk ke sistem.", "success")
         return redirect(url_for("admin_produk"))
 
     return render_template(

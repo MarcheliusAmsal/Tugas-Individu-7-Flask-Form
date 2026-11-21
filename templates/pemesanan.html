@@ -2,15 +2,12 @@
 {% block content %}
 <form method="POST" novalidate>
   {{ form.hidden_tag() }}
-  <div class="row g-5">
+  <div class="row g-4 g-lg-5">
 
     <!-- SISI KIRI: Formulir Checkout Data Pemesan & Alamat -->
     <div class="col-lg-7">
       <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border border-success-subtle">
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <span class="fs-3">📝</span>
-          <h3 class="fw-bold text-success mb-0">Formulir Pemesanan Makanan</h3>
-        </div>
+        <h3 class="fw-bold text-success mb-2">Formulir Pemesanan Makanan</h3>
         <p class="text-muted small mb-4">
           Silakan isi formulir di bawah ini dengan lengkap. Setelah tombol diproses, data pemesan serta <strong>nama menu yang Anda pilih akan langsung dikirim dan dicatat di Dashboard Admin</strong>.
         </p>
@@ -87,12 +84,9 @@
     <div class="col-lg-5">
       <div class="order-summary-box shadow-sm border border-success-subtle sticky-top" style="top: 95px;">
         <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-success-subtle">
-          <div class="d-flex align-items-center gap-2">
-            <span class="fs-4">🍱</span>
-            <h4 class="fw-bold mb-0 text-success">Daftar Menu Dipesan</h4>
-          </div>
+          <h4 class="fw-bold mb-0 text-success">Daftar Menu Dipesan</h4>
           <a href="{{ url_for('keranjang') }}" class="btn btn-outline-green btn-sm rounded-pill px-3">
-            ✏️ Kelola Menu
+            Kelola Menu
           </a>
         </div>
 
@@ -100,22 +94,22 @@
         <div class="mb-4">
           {% if menu %}
             {% for item in menu %}
-            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
-              <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3 gap-2">
+              <div class="d-flex align-items-center gap-3 overflow-hidden">
                 <img
                   src="{{ item.gambar }}"
-                  onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22 viewBox=%220 0 70 70%22><rect width=%2270%22 height=%2270%22 rx=%2210%22 fill=%22%2322c55e%22/><text x=%2250%25%22 y=%2254%25%22 font-size=%2228%22 text-anchor=%22middle%22>🍱</text></svg>';"
-                  class="food-thumb shadow-sm"
+                  onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2268%22 height=%2268%22 viewBox=%220 0 68 68%22><rect width=%2268%22 height=%2268%22 rx=%2210%22 fill=%22%2322c55e%22/><text x=%2250%25%22 y=%2254%25%22 font-size=%2212%22 fill=%22%23ffffff%22 font-weight=%22bold%22 text-anchor=%22middle%22>MENU</text></svg>';"
+                  class="food-thumb flex-shrink-0"
                   alt="{{ item.nama }}"
                 >
-                <div>
-                  <h6 class="fw-bold mb-1 text-dark">{{ item.nama }}</h6>
+                <div class="overflow-hidden">
+                  <h6 class="fw-bold mb-1 text-dark text-truncate">{{ item.nama }}</h6>
                   <span class="text-success fw-bold small">Rp {{ "{:,.0f}".format(item.harga).replace(',', '.') }}</span>
                 </div>
               </div>
-              <div class="d-flex align-items-center gap-2">
+              <div class="d-flex align-items-center gap-2 flex-shrink-0">
                 <div class="btn-group btn-group-sm">
-                  <a href="{{ url_for('kurang_qty', item_id=item.id) }}" class="btn btn-outline-success px-2 py-0 fw-bold" title="Kurangi Porsi">−</a>
+                  <a href="{{ url_for('kurang_qty', item_id=item.id) }}" class="btn btn-outline-success px-2 py-0 fw-bold" title="Kurangi Porsi">-</a>
                   <span class="btn btn-outline-success disabled text-dark fw-bold px-2 py-0">{{ item.qty }}x</span>
                   <a href="{{ url_for('tambah_qty', item_id=item.id) }}" class="btn btn-outline-success px-2 py-0 fw-bold" title="Tambah Porsi">+</a>
                 </div>
@@ -134,9 +128,9 @@
           <label class="form-label text-success-emphasis small fw-semibold">Kupon Diskon Otomatis</label>
           <div class="input-group">
             <input type="text" class="form-control custom-input" value="KUPONMAKAN" readonly>
-            <button type="button" class="btn btn-green px-3" style="border-radius: 0 10px 10px 0;">Terpasang ✓</button>
+            <button type="button" class="btn btn-green px-3" style="border-radius: 0 10px 10px 0;">Terpasang</button>
           </div>
-          <span class="text-success small fw-semibold mt-1 d-block">🎉 Potongan Rp 5.000 untuk pesanan di atas Rp 20.000</span>
+          <span class="text-success small fw-semibold mt-1 d-block">Potongan Rp 5.000 untuk pesanan di atas Rp 20.000</span>
         </div>
 
         <!-- Rincian Biaya -->
@@ -166,7 +160,7 @@
         {% if menu %}
           {{ form.submit(class="btn btn-green w-100 py-3 fw-bold rounded-3 shadow fs-6") }}
           <small class="text-center text-muted d-block mt-2">
-            🔒 Data pesanan dan nama menu akan langsung dikirim ke Dashboard Admin.
+            Data pesanan dan nama menu akan langsung dikirim ke Dashboard Admin.
           </small>
         {% else %}
           <button type="button" class="btn btn-secondary w-100 py-3 fw-bold rounded-3" disabled>
