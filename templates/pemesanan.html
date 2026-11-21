@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST" novalidate>
+  {{ form.hidden_tag() }}
+  <div class="row g-5">
+
+    <!-- SISI KIRI: Form Checkout Data Pelanggan & Alamat -->
+    <div class="col-lg-7">
+      <div class="bg-white p-4 rounded-4 shadow-sm border">
+        <h3 class="fw-bold mb-1">Detail Checkout</h3>
+        <p class="text-muted small mb-4">Lengkapi informasi pengiriman dan metode pembayaran untuk menyelesaikan pesanan.</p>
+
+        <!-- Bagian 1: Customer Details -->
+        <div class="section-title">1. Customer Details (Data Pemesan)</div>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            {{ form.nama_depan.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.nama_depan(class="form-control custom-input" + (" is-invalid" if form.nama_depan.errors else ""), placeholder="Nama Depan") }}
+            {% for err in form.nama_depan.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+          <div class="col-sm-6">
+            {{ form.nama_belakang.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.nama_belakang(class="form-control custom-input" + (" is-invalid" if form.nama_belakang.errors else ""), placeholder="Nama Belakang") }}
+            {% for err in form.nama_belakang.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+          <div class="col-sm-6">
+            {{ form.email.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.email(class="form-control custom-input" + (" is-invalid" if form.email.errors else ""), placeholder="nama@email.com") }}
+            {% for err in form.email.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+          <div class="col-sm-6">
+            {{ form.no_hp.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.no_hp(class="form-control custom-input" + (" is-invalid" if form.no_hp.errors else ""), placeholder="08xxxxxxxxxx") }}
+            {% for err in form.no_hp.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Bagian 2: Shipping Details -->
+        <div class="section-title">2. Shipping Details (Alamat Antar)</div>
+        <div class="row g-3 mb-4">
+          <div class="col-12">
+            {{ form.alamat.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.alamat(class="form-control custom-input" + (" is-invalid" if form.alamat.errors else ""), placeholder="Nama Jalan, Gedung, No. Rumah, RT/RW") }}
+            {% for err in form.alamat.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+          <div class="col-sm-6">
+            {{ form.kode_pos.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.kode_pos(class="form-control custom-input" + (" is-invalid" if form.kode_pos.errors else ""), placeholder="5 digit kode pos (misal: 12345)") }}
+            {% for err in form.kode_pos.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+          <div class="col-sm-6">
+            {{ form.kota.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.kota(class="form-control custom-input" + (" is-invalid" if form.kota.errors else ""), placeholder="Nama Kota / Kabupaten") }}
+            {% for err in form.kota.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Bagian 3: Payment Method -->
+        <div class="section-title">3. Payment Method (Metode Pembayaran)</div>
+        <div class="mb-2">
+          {{ form.metode_pembayaran.label(class="form-label text-muted small fw-semibold") }}
+          {{ form.metode_pembayaran(class="form-select custom-input") }}
+        </div>
+      </div>
+    </div>
+
+    <!-- SISI KANAN: Order Summary -->
+    <div class="col-lg-5">
+      <div class="order-summary-box shadow-sm border sticky-top" style="top: 90px;">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+          <h4 class="fw-bold mb-0">Order Summary</h4>
+          <a href="{{ url_for('keranjang') }}" class="btn btn-outline-dark btn-sm fw-semibold">
+            ✏️ Edit Keranjang
+          </a>
+        </div>
+
+        <!-- Daftar Menu yang Dipesan -->
+        <div class="mb-4">
+          {% if menu %}
+            {% for item in menu %}
+            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
+              <div class="d-flex align-items-center gap-3">
+                <img
+                  src="{{ item.gambar }}"
+                  onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22 viewBox=%220 0 70 70%22><rect width=%2270%22 height=%2270%22 rx=%2210%22 fill=%22%23f59e0b%22/><text x=%2250%25%22 y=%2254%25%22 font-size=%2228%22 text-anchor=%22middle%22>🍱</text></svg>';"
+                  class="food-thumb border shadow-sm"
+                  alt="{{ item.nama }}"
+                >
+                <div>
+                  <h6 class="fw-bold mb-0 text-dark">{{ item.nama }}</h6>
+                  <span class="text-muted small">Rp {{ "{:,.0f}".format(item.harga).replace(',', '.') }}</span>
+                </div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <div class="btn-group btn-group-sm">
+                  <a href="{{ url_for('kurang_qty', item_id=item.id) }}" class="btn btn-outline-secondary px-2 py-0">−</a>
+                  <span class="btn btn-outline-secondary disabled text-dark fw-bold px-2 py-0">{{ item.qty }}</span>
+                  <a href="{{ url_for('tambah_qty', item_id=item.id) }}" class="btn btn-outline-secondary px-2 py-0">+</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="alert alert-warning small mb-3">
+              Keranjang masih kosong. Silakan <a href="{{ url_for('admin_produk') }}" class="fw-bold alert-link">tambah menu</a> terlebih dahulu.
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Kupon Diskon Aktif -->
+        <div class="mb-4">
+          <label class="form-label text-muted small fw-semibold">Kode Promo / Kupon</label>
+          <div class="input-group">
+            <input type="text" class="form-control custom-input" value="KUPONMAKAN" readonly>
+            <button type="button" class="btn btn-dark fw-bold px-3" style="border-radius: 0 10px 10px 0;">Terpasang ✓</button>
+          </div>
+          <span class="text-success small fw-semibold mt-1 d-block">Hemat Rp 5.000 untuk pesanan di atas Rp 20.000</span>
+        </div>
+
+        <!-- Rincian Biaya -->
+        <div class="d-flex justify-content-between mb-2 text-muted small">
+          <span>Subtotal Makanan</span>
+          <span>Rp {{ "{:,.0f}".format(subtotal).replace(',', '.') }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2 text-muted small">
+          <span>Ongkir Flat (Delivery)</span>
+          <span>Rp {{ "{:,.0f}".format(ongkir).replace(',', '.') }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2 text-muted small">
+          <span>Pajak Restoran</span>
+          <span>Rp {{ "{:,.0f}".format(pajak).replace(',', '.') }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2 small text-success fw-bold">
+          <span>Diskon Kupon</span>
+          <span>- Rp {{ "{:,.0f}".format(diskon).replace(',', '.') }}</span>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between fw-bold fs-5 mb-4 text-dark">
+          <span>Total Pembayaran</span>
+          <span>Rp {{ "{:,.0f}".format(total).replace(',', '.') }}</span>
+        </div>
+
+        {% if menu %}
+          {{ form.submit(class="btn btn-dark w-100 py-3 fw-bold rounded-3 shadow-sm") }}
+        {% else %}
+          <button type="button" class="btn btn-secondary w-100 py-3 fw-bold rounded-3" disabled>
+            Keranjang Kosong
+          </button>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</form>
+{% endblock %}

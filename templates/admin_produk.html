@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row g-4">
+
+  <!-- Kolom Kiri: Form Tambah Menu Baru -->
+  <div class="col-lg-5">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-header bg-dark text-white fw-bold py-3 rounded-top-4 d-flex justify-content-between align-items-center">
+        <span>⚙️ Dashboard Admin - Tambah Menu</span>
+      </div>
+      <div class="card-body bg-white p-4 rounded-bottom-4">
+        <form method="POST" novalidate>
+          {{ form.hidden_tag() }}
+
+          <div class="mb-3">
+            {{ form.nama.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.nama(class="form-control custom-input" + (" is-invalid" if form.nama.errors else ""), placeholder="Contoh: Nasi Goreng Seafood Box") }}
+            {% for err in form.nama.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.kategori.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.kategori(class="form-select custom-input") }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.harga.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.harga(class="form-control custom-input" + (" is-invalid" if form.harga.errors else ""), placeholder="Contoh: 25000 (hanya angka)") }}
+            {% for err in form.harga.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.gambar.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.gambar(class="form-control custom-input" + (" is-invalid" if form.gambar.errors else ""), placeholder="https://... (opsional, ada foto bawaan)") }}
+            {% for err in form.gambar.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          {{ form.submit(class="btn btn-warning w-100 py-2.5 fw-bold text-dark mt-2 shadow-sm") }}
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kolom Kanan: Pesanan Masuk (Real-time) -->
+  <div class="col-lg-7">
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+      <div class="card-header bg-dark text-white fw-bold py-3 rounded-top-4 d-flex justify-content-between align-items-center">
+        <span>📋 Pesanan Masuk (Real-time)</span>
+        <span class="badge bg-warning text-dark">{{ pesanan|length }} Pesanan</span>
+      </div>
+      <div class="card-body bg-white p-4 rounded-bottom-4">
+        {% if pesanan %}
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle small mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Pemesan & Kontak</th>
+                <th>Alamat Antar</th>
+                <th>Menu Dipesan</th>
+                <th>Metode</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in pesanan %}
+              <tr>
+                <td class="fw-bold text-primary">{{ p.id }}</td>
+                <td>
+                  <span class="fw-bold">{{ p.nama }}</span><br>
+                  <span class="text-muted small">📱 {{ p.no_hp }}</span><br>
+                  <span class="text-muted small">✉️ {{ p.email }}</span>
+                </td>
+                <td><small>{{ p.alamat }}</small></td>
+                <td><span class="badge bg-light text-dark border">{{ p.items }}</span></td>
+                <td><span class="badge bg-secondary">{{ p.pembayaran }}</span></td>
+                <td class="fw-bold text-success text-nowrap">Rp {{ "{:,.0f}".format(p.total_bayar).replace(',', '.') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+          <div class="fs-1 text-muted mb-2">📋</div>
+          <p class="text-muted mb-0">Belum ada transaksi pemesanan yang masuk.</p>
+          <a href="{{ url_for('pemesanan') }}" class="btn btn-sm btn-outline-dark mt-3">Ke Halaman Checkout</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Daftar Menu Aktif di Warung -->
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-header bg-secondary text-white fw-bold py-3 rounded-top-4 d-flex justify-content-between align-items-center">
+        <span>🍽️ Daftar Menu Aktif</span>
+        <span class="badge bg-light text-dark">{{ menu|length }} Menu</span>
+      </div>
+      <div class="card-body bg-white p-3 rounded-bottom-4">
+        {% if menu %}
+        <div class="table-responsive">
+          <table class="table table-sm table-striped align-middle small mb-0">
+            <thead>
+              <tr>
+                <th>Foto</th>
+                <th>Nama Menu</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for m in menu %}
+              <tr>
+                <td>
+                  <img
+                    src="{{ m.gambar }}"
+                    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><rect width=%2240%22 height=%2240%22 rx=%228%22 fill=%22%23f59e0b%22/><text x=%2250%25%22 y=%2256%25%22 font-size=%2220%22 text-anchor=%22middle%22>🍱</text></svg>';"
+                    style="width: 44px; height: 44px; object-fit: cover; border-radius: 8px;"
+                    alt="{{ m.nama }}"
+                  >
+                </td>
+                <td class="fw-bold">{{ m.nama }}</td>
+                <td><span class="badge bg-secondary-subtle text-secondary">{{ m.kategori }}</span></td>
+                <td class="fw-semibold">Rp {{ "{:,.0f}".format(m.harga).replace(',', '.') }}</td>
+                <td>
+                  <a href="{{ url_for('admin_hapus_menu', item_id=m.id) }}" class="btn btn-outline-danger btn-sm py-0 px-2" onclick="return confirm('Hapus menu ini?');">
+                    Hapus
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="text-muted text-center py-3 mb-0">Belum ada menu di database.</p>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
