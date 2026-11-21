@@ -1,10 +1,11 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from forms import PemesananForm, TambahProdukForm
+from datetime import datetime
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "warung-online-token-secret-2026"
 
-# Database simulasi pesanan masuk
+# Database simulasi pesanan masuk (tercatat di Dashboard Admin)
 PESANAN_DB = []
 
 # Database simulasi keranjang belanja & menu aktif
@@ -30,7 +31,7 @@ KERANJANG_DB = [
 ]
 
 def hitung_ringkasan():
-    """Menghitung ringkasan biaya secara aman tanpa error tipe data."""
+    """Menghitung ringkasan biaya secara aman dengan tipe data numerik."""
     if not KERANJANG_DB:
         return 0, 0, 0, 0, 0
 
@@ -43,9 +44,12 @@ def hitung_ringkasan():
 
 @app.context_processor
 def inject_cart_count():
-    """Menyediakan jumlah total item keranjang ke seluruh template Jinja2."""
+    """Menyediakan jumlah total porsi item keranjang ke seluruh template."""
     total_qty = sum(int(item["qty"]) for item in KERANJANG_DB)
-    return {"total_cart_items": total_qty}
+    return {
+        "total_cart_items": total_qty,
+        "total_pesanan_masuk": len(PESANAN_DB)
+    }
 
 @app.route("/", methods=["GET", "POST"])
 def pemesanan():
@@ -54,26 +58,45 @@ def pemesanan():
 
     if form.validate_on_submit():
         if not KERANJANG_DB:
-            flash("Keranjang belanja Anda masih kosong! Silakan tambahkan menu terlebih dahulu sebelum checkout.", "warning")
+            flash("Keranjang belanja masih kosong! Silakan pilih menu terlebih dahulu sebelum melakukan checkout.", "warning")
             return redirect(url_for("keranjang"))
 
-        # Ringkas item pesanan untuk disimpan
-        rincian_pesanan = ", ".join([f"{item['nama']} ({item['qty']}x)" for item in KERANJANG_DB])
-        
-        pesanan_baru = {
-            "id": f"ORD-{len(PESANAN_DB) + 1:04d}",
-            "nama": f"{form.nama_depan.data} {form.nama_belakang.data}",
-            "email": form.email.data,
-            "no_hp": form.no_hp.data,
-            "alamat": f"{form.alamat.data}, {form.kota.data} ({form.kode_pos.data})",
-            "pembayaran": form.metode_pembayaran.data,
-            "items": rincian_pesanan,
-            "total_bayar": total
-        }
-        PESANAN_DB.append(pesanan_baru)
+        # 1. Catat nama menu yang dipesan beserta porsi dan rincian harga
+        daftar_menu_pesanan = []
+        for item in KERANJANG_DB:
+            daftar_menu_pesanan.append({
+                "nama": item["nama"],
+                "qty": item["qty"],
+                "harga": int(item["harga"]),
+                "subtotal": int(item["harga"]) * int(item["qty"])
+            })
 
-        flash(f"🎉 Pesanan atas nama {form.nama_depan.data} {form.nama_belakang.data} berhasil dibuat! Data telah diteruskan ke dapur.", "success")
-        return redirect(url_for("pemesanan"))
+        rincian_teks = ", ".join([f"{item['nama']} ({item['qty']}x)" for item in KERANJANG_DB])
+        waktu_sekarang = datetime.now().strftime("%d %b %Y, %H:%M WIB")
+
+        # 2. Rekam seluruh data pemesan & menu yang dipesan ke Dashboard Admin (PESANAN_DB)
+        pesanan_baru = {
+            "id": f"ORD-{len(PESANAN_DB) + 1001}",
+            "waktu": waktu_sekarang,
+            "nama": f"{form.nama_depan.data.strip()} {form.nama_belakang.data.strip()}",
+            "email": form.email.data.strip(),
+            "no_hp": form.no_hp.data.strip(),
+            "alamat": f"{form.alamat.data.strip()}, {form.kota.data.strip()} (Kode Pos: {form.kode_pos.data.strip()})",
+            "pembayaran": form.metode_pembayaran.data,
+            "items": rincian_teks,
+            "daftar_menu": daftar_menu_pesanan,
+            "total_bayar": total,
+            "status": "Tercatat di Admin"
+        }
+        
+        # Simpan pesanan baru di urutan paling atas
+        PESANAN_DB.insert(0, pesanan_baru)
+
+        flash(
+            f"🎉 Pesanan atas nama {pesanan_baru['nama']} berhasil dibuat! Data formulir dan menu yang dipesan ({rincian_teks}) telah dikirim dan dicatat di Dashboard Admin.",
+            "success"
+        )
+        return redirect(url_for("admin_produk"))
 
     return render_template(
         "pemesanan.html",
@@ -104,9 +127,8 @@ def tambah_qty(item_id):
     for item in KERANJANG_DB:
         if item["id"] == item_id:
             item["qty"] += 1
-            flash(f"Jumlah {item['nama']} ditambah menjadi {item['qty']}x.", "info")
+            flash(f"Porsi '{item['nama']}' ditambah menjadi {item['qty']}x.", "info")
             break
-    # Kembali ke halaman asal (keranjang atau pemesanan)
     referrer = request.referrer
     if referrer and "keranjang" in referrer:
         return redirect(url_for("keranjang"))
@@ -118,10 +140,10 @@ def kurang_qty(item_id):
         if item["id"] == item_id:
             if item["qty"] > 1:
                 item["qty"] -= 1
-                flash(f"Jumlah {item['nama']} dikurangi menjadi {item['qty']}x.", "info")
+                flash(f"Porsi '{item['nama']}' dikurangi menjadi {item['qty']}x.", "info")
             else:
                 KERANJANG_DB.remove(item)
-                flash(f"{item['nama']} telah dihapus dari keranjang.", "warning")
+                flash(f"Menu '{item['nama']}' telah dihapus dari keranjang.", "warning")
             break
     referrer = request.referrer
     if referrer and "keranjang" in referrer:
@@ -133,7 +155,7 @@ def hapus_item(item_id):
     for item in list(KERANJANG_DB):
         if item["id"] == item_id:
             KERANJANG_DB.remove(item)
-            flash(f"Menu '{item['nama']}' dihapus dari keranjang.", "warning")
+            flash(f"Menu '{item['nama']}' berhasil dihapus dari keranjang.", "warning")
             break
     referrer = request.referrer
     if referrer and "keranjang" in referrer:
@@ -146,7 +168,6 @@ def admin_produk():
     if form.validate_on_submit():
         gambar_input = form.gambar.data.strip() if form.gambar.data and form.gambar.data.strip() else ""
         if not gambar_input:
-            # Fallback gambar menarik berdasarkan kategori
             if form.kategori.data == "Minuman":
                 gambar_input = "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500&q=80"
             elif form.kategori.data == "Paket Box":
@@ -155,8 +176,6 @@ def admin_produk():
                 gambar_input = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=500&q=80"
 
         next_id = max([item["id"] for item in KERANJANG_DB], default=0) + 1
-        
-        # Konversi form.harga.data menjadi integer eksplisit agar tidak ada TypeError string
         harga_int = int(form.harga.data)
 
         menu_baru = {
@@ -169,7 +188,7 @@ def admin_produk():
             "gambar": gambar_input
         }
         KERANJANG_DB.append(menu_baru)
-        flash(f"✅ Menu '{form.nama.data}' (Rp {harga_int:,.0f}) berhasil ditambahkan ke daftar menu & keranjang!", "success")
+        flash(f"✅ Menu baru '{form.nama.data}' (Rp {harga_int:,.0f}) berhasil dicatat dan masuk ke sistem!", "success")
         return redirect(url_for("admin_produk"))
 
     return render_template(

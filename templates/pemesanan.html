@@ -4,91 +4,99 @@
   {{ form.hidden_tag() }}
   <div class="row g-5">
 
-    <!-- SISI KIRI: Form Checkout Data Pelanggan & Alamat -->
+    <!-- SISI KIRI: Formulir Checkout Data Pemesan & Alamat -->
     <div class="col-lg-7">
-      <div class="bg-white p-4 rounded-4 shadow-sm border">
-        <h3 class="fw-bold mb-1">Detail Checkout</h3>
-        <p class="text-muted small mb-4">Lengkapi informasi pengiriman dan metode pembayaran untuk menyelesaikan pesanan.</p>
+      <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border border-success-subtle">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="fs-3">📝</span>
+          <h3 class="fw-bold text-success mb-0">Formulir Pemesanan Makanan</h3>
+        </div>
+        <p class="text-muted small mb-4">
+          Silakan isi formulir di bawah ini dengan lengkap. Setelah tombol diproses, data pemesan serta <strong>nama menu yang Anda pilih akan langsung dikirim dan dicatat di Dashboard Admin</strong>.
+        </p>
 
         <!-- Bagian 1: Customer Details -->
-        <div class="section-title">1. Customer Details (Data Pemesan)</div>
+        <div class="section-title">1. Data Pemesan (Customer Details)</div>
         <div class="row g-3">
           <div class="col-sm-6">
-            {{ form.nama_depan.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.nama_depan.label(class="form-label text-success-emphasis small fw-semibold") }}
             {{ form.nama_depan(class="form-control custom-input" + (" is-invalid" if form.nama_depan.errors else ""), placeholder="Nama Depan") }}
             {% for err in form.nama_depan.errors %}
-              <div class="invalid-feedback">{{ err }}</div>
+              <div class="invalid-feedback fw-semibold">{{ err }}</div>
             {% endfor %}
           </div>
           <div class="col-sm-6">
-            {{ form.nama_belakang.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.nama_belakang.label(class="form-label text-success-emphasis small fw-semibold") }}
             {{ form.nama_belakang(class="form-control custom-input" + (" is-invalid" if form.nama_belakang.errors else ""), placeholder="Nama Belakang") }}
             {% for err in form.nama_belakang.errors %}
-              <div class="invalid-feedback">{{ err }}</div>
+              <div class="invalid-feedback fw-semibold">{{ err }}</div>
             {% endfor %}
           </div>
           <div class="col-sm-6">
-            {{ form.email.label(class="form-label text-muted small fw-semibold") }}
-            {{ form.email(class="form-control custom-input" + (" is-invalid" if form.email.errors else ""), placeholder="nama@email.com") }}
+            {{ form.email.label(class="form-label text-success-emphasis small fw-semibold") }}
+            {{ form.email(class="form-control custom-input" + (" is-invalid" if form.email.errors else ""), placeholder="contoh@gmail.com") }}
             {% for err in form.email.errors %}
-              <div class="invalid-feedback">{{ err }}</div>
+              <div class="invalid-feedback fw-semibold">{{ err }}</div>
             {% endfor %}
           </div>
           <div class="col-sm-6">
-            {{ form.no_hp.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.no_hp.label(class="form-label text-success-emphasis small fw-semibold") }}
             {{ form.no_hp(class="form-control custom-input" + (" is-invalid" if form.no_hp.errors else ""), placeholder="08xxxxxxxxxx") }}
             {% for err in form.no_hp.errors %}
-              <div class="invalid-feedback">{{ err }}</div>
+              <div class="invalid-feedback fw-semibold">{{ err }}</div>
             {% endfor %}
           </div>
         </div>
 
         <!-- Bagian 2: Shipping Details -->
-        <div class="section-title">2. Shipping Details (Alamat Antar)</div>
+        <div class="section-title">2. Alamat Pengiriman (Shipping Details)</div>
         <div class="row g-3 mb-4">
           <div class="col-12">
-            {{ form.alamat.label(class="form-label text-muted small fw-semibold") }}
-            {{ form.alamat(class="form-control custom-input" + (" is-invalid" if form.alamat.errors else ""), placeholder="Nama Jalan, Gedung, No. Rumah, RT/RW") }}
+            {{ form.alamat.label(class="form-label text-success-emphasis small fw-semibold") }}
+            {{ form.alamat(class="form-control custom-input" + (" is-invalid" if form.alamat.errors else ""), placeholder="Nama Jalan, Blok, No. Rumah, RT/RW") }}
             {% for err in form.alamat.errors %}
-              <div class="invalid-feedback">{{ err }}</div>
+              <div class="invalid-feedback fw-semibold">{{ err }}</div>
             {% endfor %}
           </div>
           <div class="col-sm-6">
-            {{ form.kode_pos.label(class="form-label text-muted small fw-semibold") }}
-            {{ form.kode_pos(class="form-control custom-input" + (" is-invalid" if form.kode_pos.errors else ""), placeholder="5 digit kode pos (misal: 12345)") }}
+            {{ form.kode_pos.label(class="form-label text-success-emphasis small fw-semibold") }}
+            {{ form.kode_pos(class="form-control custom-input" + (" is-invalid" if form.kode_pos.errors else ""), placeholder="5 digit angka (misal: 12345)") }}
             {% for err in form.kode_pos.errors %}
-              <div class="invalid-feedback">{{ err }}</div>
+              <div class="invalid-feedback fw-semibold">{{ err }}</div>
             {% endfor %}
           </div>
           <div class="col-sm-6">
-            {{ form.kota.label(class="form-label text-muted small fw-semibold") }}
+            {{ form.kota.label(class="form-label text-success-emphasis small fw-semibold") }}
             {{ form.kota(class="form-control custom-input" + (" is-invalid" if form.kota.errors else ""), placeholder="Nama Kota / Kabupaten") }}
             {% for err in form.kota.errors %}
-              <div class="invalid-feedback">{{ err }}</div>
+              <div class="invalid-feedback fw-semibold">{{ err }}</div>
             {% endfor %}
           </div>
         </div>
 
         <!-- Bagian 3: Payment Method -->
-        <div class="section-title">3. Payment Method (Metode Pembayaran)</div>
-        <div class="mb-2">
-          {{ form.metode_pembayaran.label(class="form-label text-muted small fw-semibold") }}
+        <div class="section-title">3. Metode Pembayaran (Payment Method)</div>
+        <div class="mb-3">
+          {{ form.metode_pembayaran.label(class="form-label text-success-emphasis small fw-semibold") }}
           {{ form.metode_pembayaran(class="form-select custom-input") }}
         </div>
       </div>
     </div>
 
-    <!-- SISI KANAN: Order Summary -->
+    <!-- SISI KANAN: Ringkasan Menu & Pesanan -->
     <div class="col-lg-5">
-      <div class="order-summary-box shadow-sm border sticky-top" style="top: 90px;">
-        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-          <h4 class="fw-bold mb-0">Order Summary</h4>
-          <a href="{{ url_for('keranjang') }}" class="btn btn-outline-dark btn-sm fw-semibold">
-            ✏️ Edit Keranjang
+      <div class="order-summary-box shadow-sm border border-success-subtle sticky-top" style="top: 95px;">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-success-subtle">
+          <div class="d-flex align-items-center gap-2">
+            <span class="fs-4">🍱</span>
+            <h4 class="fw-bold mb-0 text-success">Daftar Menu Dipesan</h4>
+          </div>
+          <a href="{{ url_for('keranjang') }}" class="btn btn-outline-green btn-sm rounded-pill px-3">
+            ✏️ Kelola Menu
           </a>
         </div>
 
-        <!-- Daftar Menu yang Dipesan -->
+        <!-- Daftar Item Menu yang Dipesan dengan Foto Menarik -->
         <div class="mb-4">
           {% if menu %}
             {% for item in menu %}
@@ -96,39 +104,39 @@
               <div class="d-flex align-items-center gap-3">
                 <img
                   src="{{ item.gambar }}"
-                  onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22 viewBox=%220 0 70 70%22><rect width=%2270%22 height=%2270%22 rx=%2210%22 fill=%22%23f59e0b%22/><text x=%2250%25%22 y=%2254%25%22 font-size=%2228%22 text-anchor=%22middle%22>🍱</text></svg>';"
-                  class="food-thumb border shadow-sm"
+                  onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22 viewBox=%220 0 70 70%22><rect width=%2270%22 height=%2270%22 rx=%2210%22 fill=%22%2322c55e%22/><text x=%2250%25%22 y=%2254%25%22 font-size=%2228%22 text-anchor=%22middle%22>🍱</text></svg>';"
+                  class="food-thumb shadow-sm"
                   alt="{{ item.nama }}"
                 >
                 <div>
-                  <h6 class="fw-bold mb-0 text-dark">{{ item.nama }}</h6>
-                  <span class="text-muted small">Rp {{ "{:,.0f}".format(item.harga).replace(',', '.') }}</span>
+                  <h6 class="fw-bold mb-1 text-dark">{{ item.nama }}</h6>
+                  <span class="text-success fw-bold small">Rp {{ "{:,.0f}".format(item.harga).replace(',', '.') }}</span>
                 </div>
               </div>
               <div class="d-flex align-items-center gap-2">
                 <div class="btn-group btn-group-sm">
-                  <a href="{{ url_for('kurang_qty', item_id=item.id) }}" class="btn btn-outline-secondary px-2 py-0">−</a>
-                  <span class="btn btn-outline-secondary disabled text-dark fw-bold px-2 py-0">{{ item.qty }}</span>
-                  <a href="{{ url_for('tambah_qty', item_id=item.id) }}" class="btn btn-outline-secondary px-2 py-0">+</a>
+                  <a href="{{ url_for('kurang_qty', item_id=item.id) }}" class="btn btn-outline-success px-2 py-0 fw-bold" title="Kurangi Porsi">−</a>
+                  <span class="btn btn-outline-success disabled text-dark fw-bold px-2 py-0">{{ item.qty }}x</span>
+                  <a href="{{ url_for('tambah_qty', item_id=item.id) }}" class="btn btn-outline-success px-2 py-0 fw-bold" title="Tambah Porsi">+</a>
                 </div>
               </div>
             </div>
             {% endfor %}
           {% else %}
-            <div class="alert alert-warning small mb-3">
+            <div class="alert alert-warning small mb-3 rounded-3">
               Keranjang masih kosong. Silakan <a href="{{ url_for('admin_produk') }}" class="fw-bold alert-link">tambah menu</a> terlebih dahulu.
             </div>
           {% endif %}
         </div>
 
-        <!-- Kupon Diskon Aktif -->
+        <!-- Kupon Promo -->
         <div class="mb-4">
-          <label class="form-label text-muted small fw-semibold">Kode Promo / Kupon</label>
+          <label class="form-label text-success-emphasis small fw-semibold">Kupon Diskon Otomatis</label>
           <div class="input-group">
             <input type="text" class="form-control custom-input" value="KUPONMAKAN" readonly>
-            <button type="button" class="btn btn-dark fw-bold px-3" style="border-radius: 0 10px 10px 0;">Terpasang ✓</button>
+            <button type="button" class="btn btn-green px-3" style="border-radius: 0 10px 10px 0;">Terpasang ✓</button>
           </div>
-          <span class="text-success small fw-semibold mt-1 d-block">Hemat Rp 5.000 untuk pesanan di atas Rp 20.000</span>
+          <span class="text-success small fw-semibold mt-1 d-block">🎉 Potongan Rp 5.000 untuk pesanan di atas Rp 20.000</span>
         </div>
 
         <!-- Rincian Biaya -->
@@ -141,24 +149,28 @@
           <span>Rp {{ "{:,.0f}".format(ongkir).replace(',', '.') }}</span>
         </div>
         <div class="d-flex justify-content-between mb-2 text-muted small">
-          <span>Pajak Restoran</span>
+          <span>Pajak Restoran (PPN)</span>
           <span>Rp {{ "{:,.0f}".format(pajak).replace(',', '.') }}</span>
         </div>
         <div class="d-flex justify-content-between mb-2 small text-success fw-bold">
           <span>Diskon Kupon</span>
           <span>- Rp {{ "{:,.0f}".format(diskon).replace(',', '.') }}</span>
         </div>
-        <hr>
-        <div class="d-flex justify-content-between fw-bold fs-5 mb-4 text-dark">
+        <hr class="border-success-subtle">
+        <div class="d-flex justify-content-between fw-bold fs-5 mb-4 text-success-emphasis">
           <span>Total Pembayaran</span>
-          <span>Rp {{ "{:,.0f}".format(total).replace(',', '.') }}</span>
+          <span class="text-success">Rp {{ "{:,.0f}".format(total).replace(',', '.') }}</span>
         </div>
 
+        <!-- Tombol Submit Kirim Pesanan ke Admin -->
         {% if menu %}
-          {{ form.submit(class="btn btn-dark w-100 py-3 fw-bold rounded-3 shadow-sm") }}
+          {{ form.submit(class="btn btn-green w-100 py-3 fw-bold rounded-3 shadow fs-6") }}
+          <small class="text-center text-muted d-block mt-2">
+            🔒 Data pesanan dan nama menu akan langsung dikirim ke Dashboard Admin.
+          </small>
         {% else %}
           <button type="button" class="btn btn-secondary w-100 py-3 fw-bold rounded-3" disabled>
-            Keranjang Kosong
+            Keranjang Masih Kosong
           </button>
         {% endif %}
       </div>

@@ -3,90 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarungOnline - Kuliner Nusantara</title>
+  <title>WarungOnline - Kuliner Nusantara Segar</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
+    :root {
+      --primary-green: #16a34a;
+      --bright-green: #22c55e;
+      --light-green: #4ade80;
+      --soft-green-bg: #f0fdf4;
+      --card-border: #bbf7d0;
+      --text-green-dark: #14532d;
+    }
+
     body {
-      background-color: #f8fafc;
+      background-color: var(--soft-green-bg);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
+
+    /* Navbar Hijau Terang */
+    .navbar-green {
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 45%, #22c55e 100%) !important;
+      box-shadow: 0 4px 16px rgba(22, 163, 74, 0.25);
+    }
+
+    .btn-green {
+      background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%) !important;
+      border: none !important;
+      color: #ffffff !important;
+      font-weight: 700;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+    }
+
+    .btn-green:hover {
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 100%) !important;
+      box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45);
+      transform: translateY(-1px);
+      color: #ffffff !important;
+    }
+
+    .btn-outline-green {
+      border: 2px solid #22c55e !important;
+      color: #15803d !important;
+      font-weight: 600;
+      background-color: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline-green:hover {
+      background-color: #22c55e !important;
+      color: #ffffff !important;
+    }
+
+    .badge-green {
+      background-color: #dcfce7 !important;
+      color: #15803d !important;
+      border: 1px solid #86efac;
+      font-weight: 600;
+    }
+
+    .badge-bright {
+      background-color: #22c55e !important;
+      color: #ffffff !important;
+      font-weight: 700;
+    }
+
     .custom-input {
-      background-color: #f1f5f9 !important;
-      border: 1px solid #e2e8f0 !important;
+      background-color: #f0fdf4 !important;
+      border: 1.5px solid #86efac !important;
       border-radius: 10px !important;
       padding: 11px 16px;
       font-size: 14px;
       transition: all 0.2s ease-in-out;
     }
+
     .custom-input:focus {
       background-color: #ffffff !important;
-      border-color: #0f172a !important;
-      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1) !important;
+      border-color: #16a34a !important;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2) !important;
     }
+
     .custom-input.is-invalid {
       border-color: #ef4444 !important;
       background-color: #fef2f2 !important;
     }
+
     .section-title {
       font-size: 15px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--text-green-dark);
       letter-spacing: 0.5px;
       text-transform: uppercase;
       margin-top: 24px;
       margin-bottom: 14px;
       padding-bottom: 6px;
-      border-bottom: 2px solid #e2e8f0;
+      border-bottom: 2px solid #86efac;
     }
+
     .order-summary-box {
       background-color: #ffffff;
       border-radius: 18px;
       padding: 24px;
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.08);
     }
+
     .food-thumb {
       width: 72px;
       height: 72px;
       object-fit: cover;
       border-radius: 12px;
+      border: 2px solid #86efac;
+    }
+
+    .card-green-header {
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 100%) !important;
+      color: #ffffff !important;
+      font-weight: 700;
+      padding: 14px 20px;
+    }
+
+    .table-green-thead th {
+      background-color: #16a34a !important;
+      color: #ffffff !important;
+      font-weight: 600;
+      border-color: #15803d !important;
     }
   </style>
 </head>
 <body>
-  <!-- Navbar Navigasi -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 py-3 shadow-sm sticky-top">
+  <!-- Navbar Navigasi Hijau Terang -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-green mb-4 py-3 sticky-top">
     <div class="container">
       <a class="navbar-brand fw-bold text-white d-flex align-items-center gap-2" href="{{ url_for('pemesanan') }}">
-        <span class="fs-4">🍱</span> WarungOnline
+        <span class="fs-4">🥗</span> WarungOnline
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navContent">
         <div class="navbar-nav ms-auto align-items-lg-center gap-2 mt-2 mt-lg-0">
-          <a href="{{ url_for('keranjang') }}" class="btn btn-outline-light btn-sm fw-semibold d-flex align-items-center gap-1">
+          <a href="{{ url_for('keranjang') }}" class="btn btn-outline-light btn-sm fw-semibold d-flex align-items-center gap-1 rounded-pill px-3">
             🛒 Keranjang
-            <span class="badge bg-warning text-dark rounded-pill ms-1">{{ total_cart_items }}</span>
+            <span class="badge bg-white text-success rounded-pill ms-1 fw-bold">{{ total_cart_items }}</span>
           </a>
-          <a href="{{ url_for('pemesanan') }}" class="btn btn-outline-light btn-sm fw-semibold">
-            💳 Checkout
+          <a href="{{ url_for('pemesanan') }}" class="btn btn-outline-light btn-sm fw-semibold rounded-pill px-3">
+            💳 Checkout Pemesanan
           </a>
-          <a href="{{ url_for('admin_produk') }}" class="btn btn-warning btn-sm fw-bold text-dark">
+          <a href="{{ url_for('admin_produk') }}" class="btn btn-light btn-sm fw-bold text-success rounded-pill px-3 shadow-sm d-flex align-items-center gap-1">
             ⚙️ Dashboard Admin
+            {% if total_pesanan_masuk > 0 %}
+            <span class="badge bg-success text-white rounded-pill ms-1">{{ total_pesanan_masuk }}</span>
+            {% endif %}
           </a>
         </div>
       </div>
     </div>
   </nav>
 
-  <div class="container pb-5">
-    <!-- Notifikasi Flash Message -->
+  <div class="container pb-5 flex-grow-1">
+    <!-- Notifikasi Flash Message Hijau & Alert -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show shadow-sm rounded-3 mb-4" role="alert">
-            {{ message }}
+          <div class="alert alert-{{ 'success' if category == 'success' else ('warning' if category == 'warning' else ('danger' if category in ['error', 'danger'] else 'info')) }} alert-dismissible fade show shadow-sm rounded-4 mb-4 border-2" role="alert">
+            <div class="d-flex align-items-center gap-2">
+              <span class="fs-5">{{ '✅' if category == 'success' else ('⚠️' if category == 'warning' else 'ℹ️') }}</span>
+              <div>{{ message }}</div>
+            </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
         {% endfor %}
@@ -97,8 +185,8 @@
   </div>
 
   <footer class="text-center text-muted small py-4 border-top bg-white mt-auto">
-    <div class="container">
-      WarungOnline &copy; 2026 - Tugas 7 Pemrograman Web (Flask Forms, WTForms, CSRF Protection)
+    <div class="container text-success-emphasis fw-medium">
+      🍃 WarungOnline &copy; 2026 — Tugas 7 Pemrograman Web (Flask Forms, WTForms, CSRF Protection)
     </div>
   </footer>
 
